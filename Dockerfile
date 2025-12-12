@@ -1,10 +1,14 @@
+#
+#
+# cgit Docker Container
+
 FROM rockylinux:9
-LABEL MAINTAINER="Lambda <lambda@disroot.org>"
+LABEL MAINTAINER="RATDAD <lambda@disroot.org>"
 
 # Update everything; install dependencies.
 RUN dnf -y update && dnf -y upgrade \
     && dnf install -y git gcc make openssl-devel zlib-devel zip \
-    highlight httpd \
+    highlight httpd pip \
     && dnf clean all
 
 # Install cgit.
@@ -20,12 +24,17 @@ RUN cd cgit \
 
 # Configure.
 ADD etc/cgitrc /etc/cgitrc
-ADD etc/httpd/httpd.conf /etc/httpd/conf/httpd.conf
+ADD etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf
 
-# Add custom syntax highlighting.
-COPY opt/highlight.sh  /opt/highlight.sh
+# Add helper scripts.
+COPY opt/ /opt
+RUN chmod +x /opt/*
+
+# Entrypoint.
+COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 # You SHOULD run this behind a reverse proxy.
 # Thus, 443 isn't being exposed.
 EXPOSE 80
-CMD [ "httpd", "-DFOREGROUND" ]
+ENTRYPOINT [ "/entrypoint.sh" ]

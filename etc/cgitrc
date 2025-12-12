@@ -1,28 +1,37 @@
 #
+#
 # cgit Runtime Configuration
 # see cgitrc(5) for details
 
 #
-# General options
-root-title=Git Repository Browser
-root-desc=a fast webinterface for the git dscm
+# Global Settings
 robots=noindex, nofollow
-scan-path=/srv/git
+snapshots=tar.gz tar.bz2 zip
 source-filter=/opt/highlight.sh
 
 #
-# Site options
+# Site Settings
 enable-index-links=1
 enable-remote-branches=1
 enable-log-filecount=1
 enable-log-linecount=1
 enable-git-config=1
-snapshots=tar.gz tar.bz2 zip
 
 #
-# Cache
+# Cache Settings
 cache-root=/var/cache/cgit
 cache-size=1000
+
+#
+# List of common mimetypes
+#
+mimetype.gif=image/gif
+mimetype.html=text/html
+mimetype.jpg=image/jpeg
+mimetype.jpeg=image/jpeg
+mimetype.pdf=application/pdf
+mimetype.png=image/png
+mimetype.svg=image/svg+xml
 
 #
 # Search for these files in the root of the default branch of repos.
@@ -55,3 +64,7 @@ readme=:INSTALL.txt
 readme=:install.txt
 readme=:INSTALL
 readme=:install
+
+# NOTE: According to the cgit mailing list, these options should go last.
+virtual-root=/
+scan-path=/srv/git
